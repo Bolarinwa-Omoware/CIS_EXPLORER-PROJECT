@@ -1,0 +1,57 @@
+<input type="file" #file style="display: none" (change)="onFilesAdded()" accept=".zip" />
+
+<div class="container" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+    <span class="win-close-i"><i 
+        class="fitted large window close icon"
+        (click)="onCloseClick()"
+        ></i></span>
+    <h1 mat-dialog-title>NEW FEATURE UPLOAD DIALOG</h1>
+    <div>
+        <mat-card class="dataSection">
+
+            <mat-form-field class="form-field-full-width">
+                <input matInput [(ngModel)]="layerName" placeholder="LAYER NAME" (change)="checkFormStatus()">
+            </mat-form-field>
+            <br>
+
+            <mat-form-field>
+                <mat-select placeholder="Projection Type" [(value)]="projectionType">
+                    <mat-option value="EPSG:4326">WGS_84</mat-option>
+                    <mat-option value="EPSG:26331"> Minna_UTM_Zone_31N </mat-option>
+                    <mat-option value="EPSG:26332"> Minna_UTM_Zone_32N </mat-option>
+                    <mat-option value="EPSG:2323"> Conony Zero </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div>
+                <button [disabled]="formFieldNotFill || uploading || uploadSuccessful" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">
+              Add Files
+            </button>
+            </div>
+            <br>
+
+            <!-- This is the content of the dialog, containing a list of the files to upload -->
+            <mat-dialog-content fxFlex>
+                <mat-list>
+                    <mat-list-item *ngFor="let file of files">
+                        <h4 mat-line>{{file.name}}</h4>
+                        <mat-progress-bar *ngIf="progress" mode="determinate" [value]="progress[file.name].progress | async"></mat-progress-bar>
+                    </mat-list-item>
+
+                </mat-list>
+            </mat-dialog-content>
+
+        </mat-card>
+    </div>
+
+
+
+
+    <!-- This are the actions of the dialog, containing the primary and the cancel button-->
+    <mat-dialog-actions class="actions">
+        <button *ngIf="showCancelButton" mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" [disabled]="!canBeClosed" (click)="closeDialog()">{{primaryButtonText}}</button>
+    </mat-dialog-actions>
+
+
+</div>

@@ -1,0 +1,139 @@
+<div class="example-container">
+    <div>
+        <mat-form-field>
+            <mat-select placeholder="Select Traverse Closing Method" [(value)]="closingMethod">
+                <mat-option value="none">None</mat-option>
+                <mat-option value="option1"> Same Starting and Finishing Points </mat-option>
+                <mat-option value="option2"> Different Starting and Finishing Points </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-card> <b>STARTING COORDINATES</b> <br>
+            <mat-form-field class="form-field-full-width">
+                <input matInput placeholder="Beacon Id" [(ngModel)]="beaconId_init">
+            </mat-form-field>
+            <mat-form-field class="form-field-full-width">
+                <input matInput placeholder="EASTING (m)" [(ngModel)]="startingEasting">
+            </mat-form-field>
+            <mat-form-field class="form-field-full-width">
+                <input matInput placeholder="NORTHING (m)" [(ngModel)]="startingNorthing">
+            </mat-form-field>
+        </mat-card>
+        <mat-card *ngIf="closingMethod === 'option2'"> <b>FINISHING COORDINATES</b> <br>
+            <mat-form-field class="form-field-full-width">
+                <input matInput placeholder="Beacon Id" [(ngModel)]="beaconId_final">
+            </mat-form-field>
+            <mat-form-field class="form-field-full-width">
+                <input matInput placeholder="EASTING (m)" [(ngModel)]="finalEasting">
+            </mat-form-field>
+            <mat-form-field class="form-field-full-width">
+                <input matInput placeholder="NORTHING (m)" [(ngModel)]="finalNorthing">
+            </mat-form-field>
+        </mat-card>
+        <div class="ui inverted divider"></div>
+        <mat-card> <b>BEARING AND DISTANCE DATA-INPUT</b> <br> <br>
+
+            <div>
+                <span>
+                    <i class="table-add fitted plus icon"></i>
+                </span>
+                <table class="table">
+                    <tr>
+                        <th>TO_STN_ID</th>
+                        <th>DISTANCE</th>
+                        <th>DEG</th>
+                        <th>MIN</th>
+                        <th>SEC</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td>
+                            <span>
+                                <i class="table-remove remove icon"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <i class="table-up arrow up icon"></i>
+                            </span>
+                            <span>
+                                <i class="table-down arrow down icon"></i>
+                            </span>
+
+                        </td>
+                    </tr>
+                    <!-- This is our clonable table line -->
+                    <tr class="hide2">
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td>
+                            <span>
+                                <i class="table-remove remove icon"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <i class="table-up arrow up icon"></i>
+                            </span>
+                            <span>
+                                <i class="table-down arrow down icon"></i>
+                            </span>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <button mat-raised-button class="matBtnT" (click)="computeTraverse()">Compute Traverse</button>
+
+        </mat-card>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <kendo-grid [data]="view" [height]="533" [pageSize]="gridState.take" [pageable]="false" [sortable]="false" (edit)="editHandler($event)"
+                (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)"
+                [navigable]="true">
+            
+                <kendo-grid-column field="BeaconId" title="Beacon Id"></kendo-grid-column>
+                <kendo-grid-column field="Distance" editor="numeric" title="Distance (m)"></kendo-grid-column>
+                <kendo-grid-column field="Deg" editor="numeric" title="Degrees"></kendo-grid-column>
+                <kendo-grid-column field="Min" editor="numeric" title="Minutes"></kendo-grid-column>
+                <kendo-grid-column field="Sec" editor="numeric" title="Seconds"></kendo-grid-column>
+            
+                <kendo-grid-command-column title="command" width="200">
+                    <ng-template kendoGridCellTemplate let-isNew="isNew">
+                        <button kendoGridEditCommand [primary]="true">Edit</button>
+                        <button kendoGridRemoveCommand>Remove</button>
+                        <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+                        <button kendoGridCancelCommand>{{ isNew ? 'Discard' : 'Cancel' }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+            
+                <ng-template kendoGridToolbarTemplate>
+                    <button kendoGridAddCommand [primary]="true">Add Data</button>
+                </ng-template>
+            </kendo-grid> -->

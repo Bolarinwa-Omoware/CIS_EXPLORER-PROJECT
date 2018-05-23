@@ -1,0 +1,17 @@
+<div class="mainDiv">
+    <span class="win-close-i"><i 
+      class="fitted large window close icon"
+      (click)="onCloseClick()"
+      ></i></span>
+    <h3 mat-dialog-title>LAND INFORMATION CERTIFICATE VERIFICATION FORM
+    </h3>
+    <div mat-dialog-content>
+        <mat-form-field class="form-field-full-width">
+            <input matInput [(ngModel)]="ref_id" placeholder="CERTIFICATE REF_ID">
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button class="matBtn" (click)="processData()">Search </button>
+        <button mat-raised-button class="matBtn" [mat-dialog-close]="closeStatus" >Cancel</button>                
+    </div>
+</div>

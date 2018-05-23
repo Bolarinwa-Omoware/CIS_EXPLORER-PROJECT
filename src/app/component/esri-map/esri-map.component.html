@@ -1,0 +1,117 @@
+<app-main-gui>
+    <div mainContent id="mapId">
+
+    </div>
+
+    <div sideContent class="side-menu">
+        <div *ngIf="menuType === 0">
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Spatial Layers
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="ui inverted divider"></div>
+                    <div>
+
+                        <mat-radio-group class="ware-radio-group" [(ngModel)]="favoriteLayer">
+                            <mat-radio-button class="ware-radio-button" *ngFor="let layer of acqusitionLayName" [value]="layer" (click)="getLandHoldingLayer('TYPE',favoriteLayer)">
+                                {{layer}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+
+                    </div>
+                    <div class="ui inverted divider"></div>
+
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Spatial Query
+                        </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+
+                    <div class="content">
+                        <div>
+                            <div class="ui inverted divider"></div>
+                            <div>
+                                <button mat-raised-button class="matBtn4eCharting" (click)="openByCoordinatesDialog()">
+                                        By_Coordinates
+                                </button>
+                            </div>
+                            <div class="ui inverted divider"></div>
+                            <div>
+                                <button mat-raised-button class="matBtn4eCharting" (click)="openByCSVfile()">CSV File</button>
+                            </div>
+                            <div class="ui inverted divider"></div>
+                            <div class="ui inverted divider"></div>
+                            <div>
+                                <button mat-raised-button class="matBtn4eCharting" (click)="openByShapefile()">Shapefile</button>
+                            </div>
+                            <div class="ui inverted divider"></div>
+
+                            <div class="ui inverted divider"></div>
+                            <div>
+                                <button mat-raised-button class="matBtn4eCharting" (click)="openByDxfDialog()">AutoCadDXF File</button>
+                            </div>
+                            <div class="ui inverted divider"></div>
+
+                            <div class="ui inverted divider"></div>
+                            <div>
+                                <button mat-raised-button class="matBtn4eCharting" (click)="openByBearingDistance()">Dist_Bearing</button>
+                            </div>
+                            <div class="ui inverted divider"></div>
+
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            App Utilities
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="ui inverted divider"></div>
+                    <div>
+                        <button mat-raised-button class="matBtn4eCharting" (click)="processReport()">Process Data</button>
+                    </div>
+                    <div class="ui inverted divider"></div>
+
+                    <div class="ui inverted divider"></div>
+                    <div>
+                        <button mat-raised-button class="matBtn4eCharting" (click)="openChartingResult()">Reporting</button>
+                    </div>
+                    <div class="ui inverted divider"></div>
+
+                    <div class="ui inverted divider"></div>
+                    <div>
+                        <button mat-raised-button class="matBtn4eCharting" (click)="submit2server()">Submit</button>
+                    </div>
+                    <div class="ui inverted divider"></div>
+
+                    <div class="ui inverted divider"></div>
+                    <div>
+                        <button mat-raised-button class="matBtn4eCharting" (click)="openLandInfoCertVerificationForm()">Verification</button>
+                    </div>
+                    <div class="ui inverted divider"></div>
+
+
+                </mat-expansion-panel>
+
+            </mat-accordion>
+
+        </div>
+    </div>
+
+
+</app-main-gui>
+
+<div style="display:none">
+    <img src="" id="mapImg">
+</div>

@@ -1,0 +1,41 @@
+.mat-expansion-panel{
+    width: 13rem;
+}
+
+.matBtn4eCharting{
+    min-width: 95%;
+    max-width: 95%;
+    color: forestgreen;
+    font-style: italic;
+    font: bold;
+}
+
+mat-expansion-panel{
+    margin-bottom: .5rem;
+}
+
+.side-menu{
+    z-index:50;
+    background-color: green;
+}
+
+.ware-radio-group {
+    display: inline-flex;
+    flex-direction: column;
+}
+  
+.ware-radio-button {
+margin: 5px;
+}
+  
+.ware-selected-value {
+margin: 15px 0;
+
+}
+
+#map {
+    position:absolute; 
+    top:0;
+    bottom:0;
+    width:100%; 
+}

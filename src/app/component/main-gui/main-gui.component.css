@@ -1,0 +1,28 @@
+.ware-container {
+    border: 2px solid rgba(0, 0, 0, 0.671);
+}
+
+.ware-sidenav-content {
+    display: flex;
+    height: 85vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.ware-sidenav {
+    padding: 10px;
+    height: 100%;
+}
+
+.example-icon {
+    padding: 0 14px;
+}
+
+.top-menu-spacer {
+    flex: 1 1 auto;
+}
+
+#app-name {
+    font-style: oblique;
+    font-weight: bolder;
+}

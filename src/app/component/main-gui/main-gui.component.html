@@ -1,0 +1,36 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span id="app-name">E-MAPPER <span  style="color:limegreen" >(v2018)</span></span>
+
+        <span class="top-menu-spacer"></span>
+
+        <button mat-button (click)="toggleMe(drawer)">
+          <i class="fitted large chart pie icon"></i>
+          <span>E-Charting</span>
+      </button>
+        <!-- <button mat-button>
+          <i class="fitted large file code icon"></i>
+          <span>Record Copy</span>
+      </button> -->
+        <button mat-button *ngIf="username">
+            <i class="fitted large user icon"></i>
+            <span> {{ username }} </span>
+      </button>
+        <button mat-button (click)="logOut()">
+            <i class="fitted large sign out alternate icon"></i>
+          <span>Logout</span>
+      </button>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-drawer-container class="ware-container" autosize>
+    <mat-drawer #drawer class="ware-sidenav" mode="side">
+        <ng-content select="[sideContent]"></ng-content>
+    </mat-drawer>
+
+    <div class="ware-sidenav-content" (click)="drawer.close()">
+        <ng-content select="[mainContent]"></ng-content>
+    </div>
+
+</mat-drawer-container>

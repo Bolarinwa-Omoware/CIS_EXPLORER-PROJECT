@@ -1,0 +1,111 @@
+<app-main-gui>
+    <div mainContent id='map'>
+
+    </div>
+
+    <div sideContent class="side-menu">
+        <mat-accordion>
+
+            <mat-expansion-panel *ngIf="role ==='admin'">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Spatial Layers
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="content">
+                    <div>
+                        <div class="ui inverted divider"></div>
+                        <div>
+                            <button mat-raised-button class="matBtn4eCharting" (click)="uploadNewFeature()">
+                                  New Layer
+                          </button>
+                        </div>
+                        <div class="ui inverted divider"></div>
+                        <div class="ui inverted divider"></div>
+                        <div>
+                            <button mat-raised-button class="matBtn4eCharting">
+                                  Add Feature
+                          </button>
+                        </div>
+                        <div class="ui inverted divider"></div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Spatial Query
+                    </mat-panel-title>
+
+                </mat-expansion-panel-header>
+
+                <div class="content">
+                    <div>
+                        <div class="ui inverted divider"></div>
+                        <div>
+                            <button mat-raised-button class="matBtn4eCharting">
+                                  By_Coordinates
+                          </button>
+                        </div>
+                        <div class="ui inverted divider"></div>
+                        <div>
+                            <button mat-raised-button class="matBtn4eCharting">CSV File</button>
+                        </div>
+                        <div class="ui inverted divider"></div>
+
+                        <div class="ui inverted divider"></div>
+                        <div>
+                            <button mat-raised-button class="matBtn4eCharting">AutoCad File</button>
+                        </div>
+                        <div class="ui inverted divider"></div>
+
+                        <div class="ui inverted divider"></div>
+                        <div>
+                            <button mat-raised-button class="matBtn4eCharting">Dist_Bearing</button>
+                        </div>
+                        <div class="ui inverted divider"></div>
+
+                    </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        App Utilities
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="ui inverted divider"></div>
+                <div>
+                    <button mat-raised-button class="matBtn4eCharting">Process Data</button>
+                </div>
+                <div class="ui inverted divider"></div>
+
+                <div class="ui inverted divider"></div>
+                <div>
+                    <button mat-raised-button class="matBtn4eCharting">Reporting</button>
+                </div>
+                <div class="ui inverted divider"></div>
+
+                <div class="ui inverted divider"></div>
+                <div>
+                    <button mat-raised-button class="matBtn4eCharting">Submit</button>
+                </div>
+                <div class="ui inverted divider"></div>
+
+                <div class="ui inverted divider"></div>
+                <div>
+                    <button mat-raised-button class="matBtn4eCharting">Verification</button>
+                </div>
+                <div class="ui inverted divider"></div>
+
+
+            </mat-expansion-panel>
+
+        </mat-accordion>
+    </div>
+
+
+</app-main-gui>

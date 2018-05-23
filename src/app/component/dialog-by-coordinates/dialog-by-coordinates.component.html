@@ -1,0 +1,217 @@
+<div class="mainDiv">
+    <span class="win-close-i"><i 
+    class="fitted large window close icon"
+    (click)="onCloseClick()"
+    ></i></span>
+    <h3 mat-dialog-title> {{method}}
+    </h3>
+    <div mat-dialog-content>
+        <div class="sidebar table-editable" id="polygonSearchTable">
+
+            <mat-card class="coordSection" *ngIf="method === 'QUERY USING BEARING AND DISTANCES'">
+                <app-bearing-dist-table *ngIf="uploadStatus === 'traversing'"></app-bearing-dist-table>
+                <div *ngIf="uploadStatus === 'loadData'">
+                    <mat-table [dataSource]="traverseDataSource">
+                        <ng-container matColumnDef="pb">
+                            <mat-header-cell *matHeaderCellDef> Beacon Number</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.pb}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="easting">
+                            <mat-header-cell *matHeaderCellDef> Eastings (m)</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.easting}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="northing">
+                            <mat-header-cell *matHeaderCellDef> Northing (m) </mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.northing}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card>
+
+            <mat-card class="coordSection" *ngIf="method === 'QUERY USING IMPORTED AUTOCAD DXF-FILE'">
+                <!-- <input type="file" style="display: none" id="fileId" /> -->
+                <!-- <input type="file" #file style="display: none" (change)="onFilesAdded()" /> -->
+                <!-- <button mat-raised-button class="matBtn" (click)="openFileDialog()">Upload File</button> -->
+                <button mat-raised-button *ngIf="uploadStatus === 'loading'" (click)="openUploadDialog()">Dxf File Upload</button>
+                <button mat-raised-button *ngIf="uploadStatus === 'loadFinished'" (click)="processFile()">Process Uploaded File</button>
+
+                <div *ngIf="uploadStatus === 'loadData'">
+                    <mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="pb">
+                            <mat-header-cell *matHeaderCellDef> Beacon Number</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.pb}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="easting">
+                            <mat-header-cell *matHeaderCellDef> Eastings (m)</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.easting}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="northing">
+                            <mat-header-cell *matHeaderCellDef> Northing (m) </mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.northing}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card>
+
+            <mat-card class="coordSection" *ngIf="method === 'QUERY USING IMPORTED SHAPEFILE'">
+                <!-- <input type="file" style="display: none" id="fileId" /> -->
+                <!-- <input type="file" #file style="display: none" (change)="onFilesAdded()" /> -->
+                <!-- <button mat-raised-button class="matBtn" (click)="openFileDialog()">Upload File</button> -->
+                <button mat-raised-button *ngIf="uploadStatus === 'loading'" (click)="openUploadDialog()">Shapefile Upload</button>
+                <button mat-raised-button *ngIf="uploadStatus === 'loadFinished'" (click)="processShapeFile()">Process Shapefile</button>
+
+                <div *ngIf="uploadStatus === 'loadData'">
+                    <mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="pb">
+                            <mat-header-cell *matHeaderCellDef> Beacon Number</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.pb}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="easting">
+                            <mat-header-cell *matHeaderCellDef> Eastings (m)</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.easting}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="northing">
+                            <mat-header-cell *matHeaderCellDef> Northing (m) </mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.northing}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card>
+
+            <mat-card class="coordSection" *ngIf="method === 'QUERY USING IMPORTED CSVFILE'">
+                <!-- <input type="file" style="display: none" id="fileId" /> -->
+                <!-- <input type="file" #file style="display: none" (change)="onFilesAdded()" /> -->
+                <!-- <button mat-raised-button class="matBtn" (click)="openFileDialog()">Upload File</button> -->
+                <button mat-raised-button *ngIf="uploadStatus === 'loading'" (click)="openUploadDialog()">CSV_FILE Upload</button>
+                <button mat-raised-button *ngIf="uploadStatus === 'loadFinished'" (click)="processCSVFile()">Process CSV_File</button>
+
+                <div *ngIf="uploadStatus === 'loadData'">
+                    <mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="pb">
+                            <mat-header-cell *matHeaderCellDef> Beacon Number</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.pb}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="easting">
+                            <mat-header-cell *matHeaderCellDef> Eastings (m)</mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.easting}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="northing">
+                            <mat-header-cell *matHeaderCellDef> Northing (m) </mat-header-cell>
+                            <mat-cell *matCellDef="let sample"> {{sample.northing}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card>
+
+            <mat-card class="coordSection" id="byCoord">
+                <div>
+                    <span><i class="table-add plus icon"></i></span>
+                    <table class="table">
+                        <tr>
+                            <th>Stn_ID</th>
+                            <th>Easting</th>
+                            <th>Northing</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Pb1</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td>
+                                <span><i class="table-remove remove icon"></i></span>
+                            </td>
+                            <td>
+                                <span><i class="table-up arrow up icon"></i></span>
+                                <span>
+                                      <i class="table-down arrow down icon"></i>
+                                  </span>
+
+                            </td>
+                        </tr>
+                        <!-- This is our clonable table line -->
+                        <tr class="hide">
+                            <td contenteditable="true">Pb</td>
+                            <td contenteditable="true" aria-placeholder="Easting"></td>
+                            <td contenteditable="true" aria-placeholder="Northing"></td>
+                            <td>
+                                <span>
+                                <i class="table-remove remove icon"></i>
+                            </span>
+                            </td>
+                            <td>
+                                <span>
+                                <i class="table-up arrow up icon"></i>
+                            </span>
+                                <span>
+                                <i class="table-down arrow down icon"></i>
+                            </span>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </mat-card>
+
+            <mat-card class="dataSection">
+
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="titleHolder" placeholder="TITLE HOLDER">
+                </mat-form-field>
+                <br>
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="surveyPlanNo" placeholder="SURVEY PLAN NO">
+                </mat-form-field>
+                <br>
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="streetName" placeholder="STREET NAME">
+                </mat-form-field>
+                <br>
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="town_vallage" placeholder="TOWN / VILAGE">
+                </mat-form-field>
+                <br>
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="cityName" placeholder="CITY">
+                </mat-form-field>
+
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="surveyBy" placeholder="SURVEY BY">
+                </mat-form-field>
+
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="dateOfSurvey" placeholder="DATE OF SURVEY">
+                </mat-form-field>
+
+                <mat-form-field class="form-field-full-width">
+                    <input matInput [(ngModel)]="phoneNo" placeholder="PHONE NUMBER">
+                </mat-form-field>
+
+
+
+
+
+                <!-- <button mat-raised-button (click)="showAnswer()">Answer me</button>
+          <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner> -->
+            </mat-card>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button class="matBtn" (click)="processData()">Save Data</button>
+        <button mat-raised-button class="matBtn" mat-dialog-close>Cancel</button>
+    </div>
+
+</div>

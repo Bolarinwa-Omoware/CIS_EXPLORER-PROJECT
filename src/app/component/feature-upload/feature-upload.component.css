@@ -1,0 +1,26 @@
+.add-files-btn {
+    float: right;
+}
+
+ :host {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.actions {
+    justify-content: flex-end;
+}
+
+.container {
+    height: 100%;
+}
+
+.dataSection {
+    background-color: #fff;
+}
+
+.form-field-full-width {
+    width: 100%;
+}

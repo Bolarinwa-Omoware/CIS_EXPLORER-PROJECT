@@ -23,9 +23,23 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              "src/styles.css",
+              "../CIS-EXPLORER-CLIENT/node_modules/font-awesome/css/font-awesome.css",
+              "../CIS-EXPLORER-CLIENT/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "../CIS-EXPLORER-CLIENT/node_modules/semantic-ui-css/semantic.css"
             ],
-            "scripts": []
+            "scripts": [
+              "../CIS-EXPLORER-CLIENT/node_modules/jquery/dist/jquery.min.js",
+              "../CIS-EXPLORER-CLIENT/node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "../CIS-EXPLORER-CLIENT/node_modules/semantic-ui-css/semantic.js",
+              "../CIS-EXPLORER-CLIENT/node_modules/proj4/dist/proj4.js",
+              "../CIS-EXPLORER-CLIENT/node_modules/turf/turf.min.js",
+              "../CIS-EXPLORER-CLIENT/node_modules/jspdf/dist/jspdf.min.js",
+              "../CIS-EXPLORER-CLIENT/node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -72,6 +86,9 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
               "src/styles.css"
             ],
             "scripts": [],

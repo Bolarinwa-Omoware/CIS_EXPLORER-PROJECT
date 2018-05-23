@@ -1,0 +1,85 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.example-container>* {
+    width: 100%;
+}
+
+b {
+    font-style: oblique;
+    font-size: 1em;
+    color: #006400;
+}
+
+mat-select {
+    width: 100%;
+    font-style: oblique;
+    font-size: 1em;
+    color: #006400;
+}
+
+mat-card {
+    padding: 2rem;
+}
+
+
+.matBtnT {
+  border-radius: .3rem;
+  /* background-color: #3571C4; */
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font: bold;
+  color: green;
+  margin-left: .5rem;
+}
+
+
+/********************************************
+*   COPY FROM THE EDITABLE TABLE ON LINE
+********************************************/
+
+.table-editable {
+  position: relative;
+}
+
+.table-editable .glyphicon {
+  font-size: 20px;
+}
+
+.table-remove {
+  color: #700;
+  cursor: pointer;
+}
+
+.table-remove:hover {
+  color: #f00;
+}
+
+.table-up,
+.table-down {
+  color: #007;
+  cursor: pointer;
+}
+
+.table-up:hover,
+.table-down:hover {
+  color: #00f;
+}
+
+.table-add {
+  color: #070;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 0;
+}
+
+.table-add:hover {
+  color: #0b0;
+}
+
+.hide2 {
+  display: none;
+}
+
