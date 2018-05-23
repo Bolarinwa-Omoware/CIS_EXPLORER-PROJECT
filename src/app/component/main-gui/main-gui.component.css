@@ -26,3 +26,7 @@
     font-style: oblique;
     font-weight: bolder;
 }
+
+span {
+    padding-left: 5px;
+}

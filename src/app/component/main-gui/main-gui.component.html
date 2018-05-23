@@ -8,10 +8,12 @@
           <i class="fitted large chart pie icon"></i>
           <span>E-Charting</span>
       </button>
-        <!-- <button mat-button>
+
+
+        <button mat-button (click)="toggleMe(drawer)">
           <i class="fitted large file code icon"></i>
-          <span>Record Copy</span>
-      </button> -->
+          <span> Illegal Extensions</span>
+      </button>
         <button mat-button *ngIf="username">
             <i class="fitted large user icon"></i>
             <span> {{ username }} </span>
