@@ -45,29 +45,6 @@ const connect = mongoose.connect(url);
 //Get the default connection
 var db = mongoose.connection;
 
-// ogr2ogr('./public/awoya.zip').exec(function(er, data) {
-//     if (er) console.error(er);
-//     data.name = 'map content'
-//     console.log(JSON.stringify(data, null, ' '));
-
-// });
-
-// for (let i = 1; i <= 3; i++) {
-//     setTimeout(function() {
-//         console.log(i + " second(s) elapsed");
-//     }, i * 1000);
-// }
-
-// function getData(options) {
-//     return new Promise(function(resolve, reject) { //create a new promise
-//         $.get("example.php", options, function(response) {
-//             resolve(JSON.parse(response)); //in case everything goes as planned
-//         }, function() {
-//             reject(new Error("AJAX request failed!")); //in case something goes wrong
-//         });
-//     });
-// }
-
 
 connect.then(() => {
     console.log("<<<<< Connected to MongoDb Server >>>>>>");
@@ -112,7 +89,7 @@ app.use('/favorites', favoriteRouter);
 app.use('/geofeatures', geoFeatureRouter);
 app.use('/property', propertyVatRouter);
 app.use('/upload', allFileUploadRouter);
-app.use('/mongodbUpload', mongodbOperationRouter);
+app.use('/mongodbServer', mongodbOperationRouter);
 
 
 
@@ -133,3 +110,44 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ogr2ogr('./public/awoya.zip').exec(function(er, data) {
+//     if (er) console.error(er);
+//     data.name = 'map content'
+//     console.log(JSON.stringify(data, null, ' '));
+
+// });
+
+// for (let i = 1; i <= 3; i++) {
+//     setTimeout(function() {
+//         console.log(i + " second(s) elapsed");
+//     }, i * 1000);
+// }
+
+// function getData(options) {
+//     return new Promise(function(resolve, reject) { //create a new promise
+//         $.get("example.php", options, function(response) {
+//             resolve(JSON.parse(response)); //in case everything goes as planned
+//         }, function() {
+//             reject(new Error("AJAX request failed!")); //in case something goes wrong
+//         });
+//     });
+// }

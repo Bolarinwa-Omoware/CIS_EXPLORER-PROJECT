@@ -71,6 +71,44 @@ mongodbOperationRouter.route('/')
         res.end('DELETE OPERATION IS NOT SUPORTED ON THIS ROUTER OUTLET'); // Updating not allowed
     });
 
+
+
+mongodbOperationRouter.route('/:featureCollectionId')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
+        GeoFeatures.findById(req.params.featureCollectionId)
+            .then((feaColl) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(feaColl);
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdminUser,
+        (req, res, next) => {
+            res.statusCode = 403;
+            res.end('POST operation not supported on /mongodbServer/' + req.params.featureCollectionId);
+        })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdminUser,
+        (req, res, next) => {
+            res.statusCode = 403;
+            res.end('PUT operation not supported on /mongodbServer/' + req.params.featureCollectionId);
+        })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdminUser,
+        (req, res, next) => {
+            GeoFeatures.findByIdAndRemove(req.params.featureCollectionId)
+                .then((resp) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(resp);
+                }, (err) => next(err))
+                .catch((err) => next(err));
+        });
+
+
 /**
  * Function to upload a new feature into the database
  * @param {*} req 

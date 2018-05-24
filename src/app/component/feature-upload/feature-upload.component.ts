@@ -95,7 +95,7 @@ export class FeatureUploadComponent implements OnInit {
     
 
     this.progress = this.uploadFeatureService.upload(
-      `${baseURL}mongodbUpload?name=${this.formFields.name}
+      `${baseURL}mongodbServer?name=${this.formFields.name}
       &projection=${this.formFields.projection}`,this.formFields);
 
 

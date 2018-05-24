@@ -2,7 +2,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatSliderModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { MatAutocompleteModule, MatBottomSheetModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatDividerModule, MatExpansionModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatSliderModule, MatSnackBarModule, MatSortModule, MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from 'angularfire2';
@@ -18,6 +18,7 @@ import { CertVerifyDialogComponent } from './component/cert-verify-dialog/cert-v
 import { DialogByCoordinatesComponent } from './component/dialog-by-coordinates/dialog-by-coordinates.component';
 import { DialogDisplayResultComponent } from './component/dialog-display-result/dialog-display-result.component';
 import { EsriMapComponent } from './component/esri-map/esri-map.component';
+import { FeatureLayersDialogComponent } from './component/feature-layers-dialog/feature-layers-dialog.component';
 import { FeatureUploadComponent } from './component/feature-upload/feature-upload.component';
 import { MainGuiComponent } from './component/main-gui/main-gui.component';
 import { MapboxPageComponent } from './component/mapbox-page/mapbox-page.component';
@@ -55,7 +56,8 @@ import { RestangularConfigFactory } from './shared/restConfig';
     MapboxPageComponent,
     UploadDialogComponent,
     BearingDistTableComponent,
-    FeatureUploadComponent
+    FeatureUploadComponent,
+    FeatureLayersDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +100,8 @@ import { RestangularConfigFactory } from './shared/restConfig';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatBottomSheetModule
   ],
   providers: [
     ProjectionModel,
@@ -132,7 +135,8 @@ import { RestangularConfigFactory } from './shared/restConfig';
     CertVerifyDialogComponent,
     WelcomeDialogComponent,
     UploadDialogComponent,
-    FeatureUploadComponent
+    FeatureUploadComponent,
+    FeatureLayersDialogComponent
   ],
   bootstrap: [AppComponent]
 })
