@@ -16,7 +16,7 @@ export class GeoJson implements IGeoJson {
 
   constructor(coordinates, public properties?) {
     this.geometry = {
-      type: 'Point',
+      type: 'Polygon',
       coordinates: coordinates
     };
   }

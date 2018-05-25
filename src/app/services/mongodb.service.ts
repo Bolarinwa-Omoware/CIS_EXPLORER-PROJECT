@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { NewFeatureFile } from '../formSubmitionModel/newFeatureModel';
+import { FeatureCollection, GeoJson } from '../geoModels/geo-model';
 import { baseURL } from '../shared/baseurl';
 
 const httpOptions = {
@@ -127,5 +128,7 @@ export class MongodbService {
     // return an observable with a user-facing error message
     return throwError('Something bad happened; please try again later.');
   };
+
+
 
 }
