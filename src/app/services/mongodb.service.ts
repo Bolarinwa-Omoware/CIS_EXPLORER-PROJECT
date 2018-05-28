@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
+import { Observable, Subject, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { NewFeatureFile } from '../formSubmitionModel/newFeatureModel';
 import { FeatureCollection, GeoJson } from '../geoModels/geo-model';
@@ -13,8 +13,8 @@ const httpOptions = {
 @Injectable()
 export class MongodbService {
 
-  // private documents = new BehaviorSubject<any>([]);
-  // document = this.documents.asObservable();
+  private documents = new BehaviorSubject<any>('');
+  document = this.documents.asObservable();
 
   coordinate;
   constructor(
@@ -23,9 +23,13 @@ export class MongodbService {
 
     }
 
-  //  setDocument(doc) {
-  //   this.documents.next(doc);
-  //  }
+   setDocument(doc) {
+    this.documents.next(doc);
+   }
+
+   getDocument(){
+     return document;
+   }
 
    
 /**
@@ -128,6 +132,13 @@ export class MongodbService {
     // return an observable with a user-facing error message
     return throwError('Something bad happened; please try again later.');
   };
+
+
+  getJsonData(featureId){
+    this.getGeoFeatureCollectionById(featureId).subscribe(res=>{
+      this.documents.next(res);
+  });
+}
 
 
 

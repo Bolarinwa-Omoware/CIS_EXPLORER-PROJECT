@@ -27,6 +27,7 @@ var ogr2ogr = require('ogr2ogr');
 const allFileUploadRouter = require('./routes/allFileUploadRouter');
 const mongodbOperationRouter = require('./routes/mongodbOperationRouter');
 const feturesUploadRouter = require('./routes/featuresUpload');
+// const fet = require('../');
 
 
 
@@ -44,6 +45,13 @@ const connect = mongoose.connect(url);
 
 //Get the default connection
 var db = mongoose.connection;
+
+ogr2ogr('./public/awoya.zip').exec(function(er, data) {
+    if (er) console.error(er);
+    data.name = 'map content'
+    console.log(JSON.stringify(data, null, ' '));
+
+});
 
 
 connect.then(() => {
@@ -66,8 +74,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, '../../CIS-EXPLORER-CLIENT/dist/CIS-EXPLORER-CLIENT')));
-app.use('/', express.static(path.join(__dirname, '../../CIS-EXPLORER-CLIENT/dist/CIS-EXPLORER-CLIENT')));
+app.use(express.static(path.join(__dirname, '../dist/CIS-EXPLORER-CLIENT')));
+app.use('/', express.static(path.join(__dirname, '../dist/CIS-EXPLORER-CLIENT')));
 
 
 app.use(passport.initialize());

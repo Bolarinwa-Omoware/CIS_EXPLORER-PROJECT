@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng build && node ./SERVER/bin/www",
+        "start": "node ./SERVER/bin/www",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
@@ -41,6 +41,7 @@
         "formidable": "^1.2.1",
         "fs-extra": "^5.0.0",
         "gdal": "^0.9.6",
+        "geojson": "^0.5.0",
         "html2canvas": "^1.0.0-alpha.12",
         "http-errors": "~1.6.2",
         "jade": "~1.11.0",

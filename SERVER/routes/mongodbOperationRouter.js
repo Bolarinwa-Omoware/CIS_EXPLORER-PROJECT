@@ -15,6 +15,7 @@ const dxfFileReader = require('../modelLibs/dxfFileReader');
 const coordProjection = require('../modelLibs/coordProjection');
 const gdal = require("gdal");
 const cors = require('./cors');
+const GeoJSON = require('geojson');
 
 const decompress = require('decompress');
 
@@ -35,6 +36,7 @@ mongodbOperationRouter.route('/')
 
         GeoFeatures.find(req.query)
             .then((features) => {
+
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(features);
@@ -127,16 +129,16 @@ function uploadNewFeature(req, res, next) {
 
                     if (req.query.projection === 'EPSG:26331') {
                         data.features.forEach(feature => {
-                            feature.geometry.coordinates = coordProjection.projMinna31_Wgs(
+                            feature.geometry.coordinates = [coordProjection.projMinna31_Wgs(
                                 feature.geometry.coordinates,
-                                feature.geometry.type);
+                                feature.geometry.type)];
                         });
 
                     } else if (req.query.projection === 'EPSG:26332') {
                         data.features.forEach(feature => {
-                            feature.geometry.coordinates = coordProjection.projMinna32_Wgs(
+                            feature.geometry.coordinates = [coordProjection.projMinna32_Wgs(
                                 feature.geometry.coordinates,
-                                feature.geometry.type);
+                                feature.geometry.type)];
                         });
                     }
 

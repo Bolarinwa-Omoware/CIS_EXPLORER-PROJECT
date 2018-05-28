@@ -10,18 +10,7 @@ var geoObjectSchema = new Schema({
         default: 'Polygon'
     },
 
-    coordinates: {
-        type: [
-                []
-            ]
-            // index: '2dsphere',
-            // default: [
-            //     [0, 0],
-            //     [0, 1],
-            //     [1, 0],
-            //     [0, 0]
-            // ]
-    }
+    coordinates: []
 });
 
 

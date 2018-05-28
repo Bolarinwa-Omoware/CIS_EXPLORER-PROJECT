@@ -7,6 +7,9 @@ import { MapboxGlService } from '../../services/mapbox-gl.service';
 import { MongodbService } from '../../services/mongodb.service';
 import { FeatureLayersDialogComponent } from '../feature-layers-dialog/feature-layers-dialog.component';
 import { FeatureUploadComponent } from '../feature-upload/feature-upload.component';
+declare let $: any;
+
+let dataBis = [];
 
 @Component({
   selector: 'app-mapbox-page',
@@ -41,16 +44,39 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
 
   ngOnInit() {
     this.authService.userRole.subscribe(res => this.role = res);
+
   }
 
   ngAfterViewInit(): void {
 
-    this.getJsonData('5b069f0c6573ca2424b0fee3').then((val)=>{
-        this.bisData = val["features"];
-        this.initializeMap(); 
+    // this.getJsonData('5b0befa6d6d3ec218c1c15e7).then((val)=>{
+    //     this.bisData = val["features"];
+    //     this.initializeMap(); 
               
-    },err=>{console.log(err);}
-    );
+    // },err=>{console.log(err);}
+    
+    // );
+
+    // this.getJsonData('5b0befa6d6d3ec218c1c15e7').then((val)=>{
+    //   this.bisData = JSON.stringify(val);
+    //   console.log(this.bisData);
+
+      
+      
+    // }, err=>{
+    //   console.log(err);
+      
+    // });
+
+    this.mongodbServer.getGeoFeatureCollectionById('5b0befa6d6d3ec218c1c15e7').subscribe(res=>{
+      dataBis.push(res);
+      
+      this.initializeMap(); 
+  });
+
+    
+  
+
 
 
     
@@ -59,7 +85,7 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   private initializeMap() {
 
     
-    let bisDat = this.format2Geojson(this.bisData);
+    let bisDat = this.bisData
     
     /// locate the user
     var map = new mapboxgl.Map({
@@ -71,21 +97,28 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
 
     
     map.on("load", function() {
-        map.addSource("bis-excess", {
-            "type": "geojson",
-            "data": bisDat
-        });
-    
-        map.addLayer({
-            "id": "bis-excess",
-            "type": "fill",
-            "source": "bis-excess",
-            "paint": {
-                "fill-color": "#888888",
-                "fill-opacity": 0.4
-            },
-            "filter": ["==", "$type", "Polygon"]
-        });
+
+      map.addSource("bis-excess", {
+        "type": "geojson",
+        "data": dataBis[0]
+      });
+
+      map.addLayer({
+        "id": "bis-excess",
+        "type": "fill",
+        "source": "bis-excess",
+        "paint": {
+            "fill-color": "#888888",
+            "fill-opacity": 0.4
+        },
+        "filter": ["==", "$type", "Polygon"]
+    });
+
+
+        // $("#addFeature").click(function(){
+        //   console.log(dataBis);
+          
+        // });
     });
   }
 
@@ -105,25 +138,6 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   }
 
 
-  getJsonData(featureId){
-      let data;
-      let err:boolean = true;
-      return new Promise((resolve, reject)=>{
-          setTimeout(()=>{
-            this.mongodbServer.getGeoFeatureCollectionById(featureId).subscribe(res=>{
-                data = res;
-                err = false;
-
-                if(err) {
-                    reject();
-                } else{
-                    resolve(data);
-                }
-            });
-          },1000);
-
-      })
-  }
 
 
 
@@ -140,3 +154,48 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // getJsonData(featureId){
+  //     let data;
+  //     let err:boolean = true;
+  //     return new Promise((resolve, reject)=>{
+  //         setTimeout(()=>{
+  //           this.mongodbServer.getGeoFeatureCollectionById(featureId).subscribe(res=>{
+  //               data = res;
+  //               err = false;
+
+  //               if(err) {
+  //                   reject();
+  //               } else{
+  //                   resolve(data);
+  //               }
+  //           });
+  //         },1000);
+
+  //     })
+  // }
