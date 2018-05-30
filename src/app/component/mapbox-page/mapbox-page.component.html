@@ -1,9 +1,14 @@
 <app-main-gui>
 
-    <mgl-map mainContent 
-        [style]="'mapbox://styles/mapbox/streets-v9'"
-        [zoom]="[14]" 
-        [center]="[3.458787,6.460754]">
+    <mgl-map mainContent [style]="'mapbox://styles/mapbox/streets-v9'" [zoom]="[14]" [center]="[3.458787,6.460754]" (load)="onLoad($event)">
+        <!-- <mgl-layer id="BananaIs-Excess" type="fill" [source]="mapDataSource[0]" [paint]="{'fill-color': '#FA0D0D','fill-opacity': 0.5}" (mouseMove)="activateHoverOn($event)" (mouseLeave)="disableHover()">
+        </mgl-layer>
+        <mgl-layer id="Banana-Plots" type="fill" [source]="mapDataSource[1]" [paint]="{'fill-color': '#8899ff','fill-opacity': 0.8}">
+        </mgl-layer>
+        <mgl-layer id="Lekki-Plots" type="fill" [source]="mapDataSource[2]" [paint]="{'fill-color': '#8788ff','fill-opacity': 0.8}">
+        </mgl-layer> -->
+
+
 
     </mgl-map>
 

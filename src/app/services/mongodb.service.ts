@@ -1,20 +1,20 @@
 import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { NewFeatureFile } from '../formSubmitionModel/newFeatureModel';
-import { FeatureCollection, GeoJson } from '../geoModels/geo-model';
 import { baseURL } from '../shared/baseurl';
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
+  headers: new HttpHeaders({'Content-Type': 'application/json'}),
+  
 };
 
 @Injectable()
 export class MongodbService {
 
-  private documents = new BehaviorSubject<any>('');
-  document = this.documents.asObservable();
+  private geoFeaturesData = new BehaviorSubject<any>([]);
+  geoFeatureData = this.geoFeaturesData.asObservable();
 
   coordinate;
   constructor(
@@ -23,12 +23,8 @@ export class MongodbService {
 
     }
 
-   setDocument(doc) {
-    this.documents.next(doc);
-   }
-
-   getDocument(){
-     return document;
+   addGeoFeature(feature) {
+    this.geoFeaturesData.next(feature);
    }
 
    
@@ -132,13 +128,6 @@ export class MongodbService {
     // return an observable with a user-facing error message
     return throwError('Something bad happened; please try again later.');
   };
-
-
-  getJsonData(featureId){
-    this.getGeoFeatureCollectionById(featureId).subscribe(res=>{
-      this.documents.next(res);
-  });
-}
 
 
 

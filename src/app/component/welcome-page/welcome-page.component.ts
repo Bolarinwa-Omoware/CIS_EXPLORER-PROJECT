@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { PagesService } from '../../services/pages.service';
 import { MongodbService } from '../../services/mongodb.service';
+import { PagesService } from '../../services/pages.service';
 
 
 @Component({
@@ -15,8 +15,6 @@ export class WelcomePageComponent implements OnInit {
 
   public page: string;
 
-  excessDat;
-
   user = {username: '', password: ''};
   errMess: string;
 
@@ -27,6 +25,8 @@ export class WelcomePageComponent implements OnInit {
     'ESRI ONLINE',
     'CUSTOMIZE MAP'
   ];
+
+  mapDataSource = [];
 
 
   constructor(
@@ -40,9 +40,35 @@ export class WelcomePageComponent implements OnInit {
   ngOnInit() {
     this._pages.page.subscribe(res => this.page = res);
     this.role = this.authService.getUserRole();
+
+    this.mongoService.getGeoFeatureCollectionById('5b0c24ebceebb401c863715d').subscribe(res=>{
+      let source = {
+        type: 'geojson',
+        data: res
+      }
+      this.mapDataSource.push(source);
+      this.mongoService.addGeoFeature(this.mapDataSource);
+    });
+    this.mongoService.getGeoFeatureCollectionById('5b0c1caa8c117929b411783b').subscribe(res=>{
+      let source = {
+        type: 'geojson',
+        data: res
+      }
+      this.mapDataSource.push(source);
+      this.mongoService.addGeoFeature(this.mapDataSource);
+    });
+
     this.mongoService.getGeoFeatureCollectionById('5b0befa6d6d3ec218c1c15e7').subscribe(res=>{
-      this.excessDat= JSON.stringify(res);
-  });
+      let source = {
+        type: 'geojson',
+        data: res
+      }
+      this.mapDataSource.push(source);
+      this.mongoService.addGeoFeature(this.mapDataSource);
+    });
+
+    this.mongoService.addGeoFeature(this.mapDataSource);
+
 }
 
   logMeIn(): void {
