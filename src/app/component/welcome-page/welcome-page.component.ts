@@ -48,7 +48,7 @@ export class WelcomePageComponent implements OnInit {
   logMeIn(): void {
 
     if (this.user.password !== '' || this.user.username !== '' || this.page !== 'Home') {
-      console.log('User: ', this.user);
+      // console.log('User: ', this.user);
       this.authService.logIn(this.user)
       .subscribe(res => {
         if (res.success) {

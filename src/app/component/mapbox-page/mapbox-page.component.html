@@ -1,7 +1,12 @@
 <app-main-gui>
-    <div mainContent id='map'>
 
-    </div>
+    <mgl-map mainContent 
+        [style]="'mapbox://styles/mapbox/streets-v9'"
+        [zoom]="[14]" 
+        [center]="[3.458787,6.460754]">
+
+    </mgl-map>
+
 
     <div sideContent class="side-menu">
         <mat-accordion>

@@ -4,11 +4,12 @@ import { MatDialogRef } from '@angular/material';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { UploadService } from '../../services/upload.service';
 import { PagesService } from '../../services/pages.service';
+import { baseURL } from '../../shared/baseurl';
 
 
-let url1 = 'http://localhost:8080/upload/?proj=0';
-let url2 =  'http://localhost:8080/upload/:csvFile/shapefile';
-let url3 = 'http://localhost:8080/upload/:csvFile';
+let url1 = baseURL+'upload/?proj=0';
+let url2 = baseURL+'upload/:csvFile/shapefile';
+let url3 = baseURL+'upload/:csvFile';
 
 // let url1 = 'https://utilityserver-202910.appspot.com/upload?proj=0';
 // let url2 =  'https://utilityserver-202910.appspot.com/uploadzip';
@@ -24,6 +25,7 @@ export class UploadDialogComponent implements OnInit {
 
   @ViewChild('file') file;
   public files: Set<File> = new Set();
+ 
 
   progress;
   canBeClosed = true;

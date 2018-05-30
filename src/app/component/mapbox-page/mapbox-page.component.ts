@@ -45,40 +45,27 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   ngOnInit() {
     this.authService.userRole.subscribe(res => this.role = res);
 
+    this.mongodbServer.getGeoFeatureCollectionById('5b0befa6d6d3ec218c1c15e7').subscribe(res => {
+      // console.log(res);
+      
+      dataBis.push(res);
+    });
+
+    this.mongodbServer.getGeoFeatureCollectionById('5b0c1caa8c117929b411783b').subscribe(res => {
+      dataBis.push(res);
+    });
+
+    this.mongodbServer.getGeoFeatureCollectionById('5b0c24ebceebb401c863715d').subscribe(res => {
+      console.log(res);
+      dataBis.push(res);
+
+    });
+
   }
 
   ngAfterViewInit(): void {
 
-    // this.getJsonData('5b0befa6d6d3ec218c1c15e7).then((val)=>{
-    //     this.bisData = val["features"];
-    //     this.initializeMap(); 
-              
-    // },err=>{console.log(err);}
-    
-    // );
-
-    // this.getJsonData('5b0befa6d6d3ec218c1c15e7').then((val)=>{
-    //   this.bisData = JSON.stringify(val);
-    //   console.log(this.bisData);
-
-      
-      
-    // }, err=>{
-    //   console.log(err);
-      
-    // });
-
-    this.mongodbServer.getGeoFeatureCollectionById('5b0befa6d6d3ec218c1c15e7').subscribe(res=>{
-      dataBis.push(res);
-      
-      this.initializeMap(); 
-  });
-
-    
-  
-
-
-
+    // this.initializeMap(); 
     
   }
 
@@ -103,22 +90,64 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
         "data": dataBis[0]
       });
 
+      map.addSource("bis-plots", {
+        "type": "geojson",
+        "data": dataBis[1]
+      });
+
+
+
       map.addLayer({
         "id": "bis-excess",
         "type": "fill",
         "source": "bis-excess",
         "paint": {
-            "fill-color": "#888888",
-            "fill-opacity": 0.4
+          "fill-color": "#FA0D0D",
+            "fill-opacity": 0.5
         },
         "filter": ["==", "$type", "Polygon"]
-    });
+      });
+
+      map.addLayer({
+        "id": "bis-plots",
+        "type": "fill",
+        "source": "bis-plots",
+        "paint": {
+          "fill-color": "#8888ff",
+          "fill-opacity": 0.4
+        },
+        "filter": ["==", "$type", "Polygon"]
+      });
+
+      // map.addLayer({
+      //   "id": "lekki-plots",
+      //   "type": "fill",
+      //   "source": "lekki-plots",
+      //   "paint": {
+      //     "fill-color": "#8788ff",
+      //     "fill-opacity": 0.5
+      //   },
+      //   "filter": ["==", "$type", "Polygon"]
+      // });
 
 
-        // $("#addFeature").click(function(){
-        //   console.log(dataBis);
+        $("#addFeature").click(function(){
           
-        // });
+          map.addSource("lekki-plots", {
+            "type": "geojson",
+            "data": dataBis[2]
+          });
+          map.addLayer({
+            "id": "lekki-plots",
+            "type": "fill",
+            "source": "lekki-plots",
+            "paint": {
+              "fill-color": "#8788ff",
+              "fill-opacity": 0.5
+            },
+            "filter": ["==", "$type", "Polygon"]
+          });
+        });
     });
   }
 

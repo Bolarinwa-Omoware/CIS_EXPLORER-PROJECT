@@ -42,7 +42,7 @@ export class AuthService {
   checkJWTtoken() {
     this.http.get<JWTResponse>(baseURL + 'users/checkJWTtoken')
     .subscribe(res => {
-      console.log("JWT Token Valid: ", res);
+      // console.log("JWT Token Valid: ", res);
       this.sendUsername(res.user.username);
       // this.sendUserRole(res.user.role);
     },
@@ -64,7 +64,7 @@ export class AuthService {
 
   loadUserCredentials() {
     var credentials = JSON.parse(localStorage.getItem(this.tokenKey));
-    console.log("loadUserCredentials ", credentials);
+    // console.log("loadUserCredentials ", credentials);
     if (credentials && credentials.username != undefined) {
       this.useCredentials(credentials);
       if (this.authToken)
@@ -73,7 +73,7 @@ export class AuthService {
   }
 
   storeUserCredentials(credentials: any) {
-    console.log("storeUserCredentials ", credentials);    
+    // console.log("storeUserCredentials ", credentials);    
     localStorage.setItem(this.tokenKey, JSON.stringify(credentials));
     this.useCredentials(credentials);
   }
@@ -101,8 +101,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(baseURL + 'users/login', 
       {"username": user.username, "password": user.password})
       .map(res => {
-        console.log(res);
-        
+        // console.log(res);        
           this.storeUserCredentials({username: user.username, token: res.token, role: res.role});
           return {'success': true, 'username': user.username };
       })

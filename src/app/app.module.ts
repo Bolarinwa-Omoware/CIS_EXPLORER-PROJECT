@@ -38,6 +38,7 @@ import { TraverseService } from './services/traverse.service';
 import { UploadService } from './services/upload.service';
 import { baseURL } from './shared/baseurl';
 import { RestangularConfigFactory } from './shared/restConfig';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 
 
@@ -101,7 +102,11 @@ import { RestangularConfigFactory } from './shared/restConfig';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    NgxMapboxGLModule.forRoot({
+      accessToken: environment.mapbox.accessToken, // Can also be set per map (accessToken input of mgl-map)
+      geocoderAccessToken: environment.mapbox.accessToken // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
+    })
   ],
   providers: [
     ProjectionModel,

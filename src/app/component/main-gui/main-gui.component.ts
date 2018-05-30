@@ -26,7 +26,10 @@ export class MainGuiComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
-      .subscribe(name => { console.log(name); this.username = name; });    
+      .subscribe(name => { 
+        // console.log(name); 
+        this.username = name;
+       });    
     this._pages.page.subscribe(res => this.page = res);
     
   }

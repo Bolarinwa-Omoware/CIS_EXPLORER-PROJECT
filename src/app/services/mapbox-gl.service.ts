@@ -13,7 +13,7 @@ export class MapboxGlService {
   map: mapboxgl.Map;
 
   constructor() {
-    mapboxgl.accessToken = environment.mapbox.accessToken;
+    // mapboxgl.accessToken = environment.mapbox.accessToken;
   }
 
   initializeMap(container:string, style:string, center:Array<number>, zoom: number){
