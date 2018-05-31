@@ -16,6 +16,9 @@ export class MongodbService {
   private geoFeaturesData = new BehaviorSubject<any>([]);
   geoFeatureData = this.geoFeaturesData.asObservable();
 
+  private featureLayers= new BehaviorSubject<any>([]);
+  featureLayer = this.featureLayers.asObservable();
+
   coordinate;
   constructor(
     private http: HttpClient
@@ -25,6 +28,10 @@ export class MongodbService {
 
    addGeoFeature(feature) {
     this.geoFeaturesData.next(feature);
+   }
+
+   addFeatureLayer(layer) {
+    this.featureLayers.next(layer);
    }
 
    
@@ -99,6 +106,12 @@ export class MongodbService {
       catchError(this.handleError)
     );
    }
+
+   getGeofeatureIds(): Observable<String[] | any> {
+    return this.getAllGeoFeatureCollection()
+      .map(features => { return features.map(feature => [feature._id,feature.name.trim()])})
+      .catch(error => { return error; });
+  }
 
 
 /**

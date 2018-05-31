@@ -21,11 +21,12 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
 
 
     /// default settings
-    // map: Map;
+    map: Map;
 
      // data
      mapDataSource = [];
-     hoverFilter = ['==', 'name', ''];
+     mapDataSourceLayer = [];
+     
 
     // Users role variable
     role: string;
@@ -41,6 +42,11 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   ngOnInit() {
 
     this.authService.userRole.subscribe(res => this.role = res);
+    this.mongodbServer.featureLayer.subscribe((res)=>{
+      console.log(res);
+      
+      this.mapDataSourceLayer = res;
+    });
     this.mongodbServer.geoFeatureData.subscribe((res)=> this.mapDataSource = res);
 
   }
@@ -51,104 +57,79 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   }
 
   onLoad(mapInstance: Map){
-    const map = mapInstance;
-
-    map.addLayer({
-        "id": "bis-excess",
-        "type": "fill",
-        "source": this.mapDataSource[0],
-        "paint": {
-          "fill-color": "#FA0D0D",
-            "fill-opacity": 0.5
-        },
-        "filter": ["==", "$type", "Polygon"]
+    this.map = mapInstance;
+    let index = 0;
+    
+    this.mapDataSourceLayer.forEach(layer=>{  
+      
+      if(layer[1].search("EXCESS") === -1){
+        this.addLayer2MapView(mapInstance,layer[1],index,"#3CB371","#008000");
+      }else{
+        this.addLayer2MapView(mapInstance,layer[1],index,"#FF0000","#FF0000");
+      }
+      console.log(index);
+      
+      index++;
     });
 
     
   }
 
-  // private initializeMap() {
 
-    
-  //   // let bisDat = this.bisData
-    
-  //   /// locate the user
-  //   var map = new mapboxgl.Map({
-  //   container: "map",
-  //   style: "mapbox://styles/mapbox/outdoors-v9",
-  //   center: [3.458787,6.460754],
-  //   zoom: 14
-  //   });
+  addLayer2MapView(mapInstance:Map, layer:string, index:number, color:string,hoverColor:string){
+    mapInstance.addLayer({
+      "id": layer+"fill",
+      "type": "fill",
+      "source": this.mapDataSource[index],
+      "layout": {},
+      "paint": {
+          "fill-color": color,
+          "fill-opacity": 0.5
+      }
+    });
 
-    
-  //   map.on("load", function() {
+    mapInstance.addLayer({
+        "id": layer+"line",
+        "type": "line",
+        "source": this.mapDataSource[index],
+        "paint": {
+          "line-color": hoverColor,
+          "line-width": 1
+        }
+    });
 
-  //     map.addSource("bis-excess", {
-  //       "type": "geojson",
-  //       "data": dataBis[0]
-  //     });
+    mapInstance.addLayer({
+      "id": layer+"hover",
+      "type": "fill",
+      "source": this.mapDataSource[index],
+      "layout": {},
+      "paint": {
+          "fill-color": hoverColor,
+          "fill-opacity": 1
+      },
+      "filter": ["==", "_id", ""]
+    });
 
-  //     map.addSource("bis-plots", {
-  //       "type": "geojson",
-  //       "data": dataBis[1]
-  //     });
+    this.activateHoverOn(mapInstance,layer+"fill",layer+"hover","_id");
+    this.disableHover(mapInstance,layer+"fill",layer+"hover","_id");
+  }
 
+  activateHoverOn(map:Map, moveOn:string, hoverOn:string, filterVal:string) {
+    // When the user moves their mouse over the states-fill layer, we'll update the filter in
+    // the state-fills-hover layer to only show the matching state, thus making a hover effect.
+    this.map.on("mousemove", moveOn, function(evt) {
+      
+      map.setFilter(hoverOn, ["==", filterVal, evt.features[0].properties[filterVal]]);
+      
+    });
+  }
 
-
-  //     map.addLayer({
-  //       "id": "bis-excess",
-  //       "type": "fill",
-  //       "source": "bis-excess",
-  //       "paint": {
-  //         "fill-color": "#FA0D0D",
-  //           "fill-opacity": 0.5
-  //       },
-  //       "filter": ["==", "$type", "Polygon"]
-  //     });
-
-  //     map.addLayer({
-  //       "id": "bis-plots",
-  //       "type": "fill",
-  //       "source": "bis-plots",
-  //       "paint": {
-  //         "fill-color": "#8888ff",
-  //         "fill-opacity": 0.4
-  //       },
-  //       "filter": ["==", "$type", "Polygon"]
-  //     });
-
-  //     // map.addLayer({
-  //     //   "id": "lekki-plots",
-  //     //   "type": "fill",
-  //     //   "source": "lekki-plots",
-  //     //   "paint": {
-  //     //     "fill-color": "#8788ff",
-  //     //     "fill-opacity": 0.5
-  //     //   },
-  //     //   "filter": ["==", "$type", "Polygon"]
-  //     // });
-
-
-  //       $("#addFeature").click(function(){
-          
-  //         map.addSource("lekki-plots", {
-  //           "type": "geojson",
-  //           "data": dataBis[2]
-  //         });
-  //         map.addLayer({
-  //           "id": "lekki-plots",
-  //           "type": "fill",
-  //           "source": "lekki-plots",
-  //           "paint": {
-  //             "fill-color": "#8788ff",
-  //             "fill-opacity": 0.5
-  //           },
-  //           "filter": ["==", "$type", "Polygon"]
-  //         });
-  //       });
-  //   });
-  // }
-
+  disableHover(map:Map, moveOn:string, hoverOn:string, filterVal:string) {
+    // Reset the state-fills-hover layer's filter when the mouse leaves the layer.
+    this.map.on("mouseleave", moveOn, function() {
+      map.setFilter(hoverOn, ["==", filterVal, ""]);
+    });
+  }
 
   uploadNewFeature(){
     const dialogRef = this.dialog.open(FeatureUploadComponent, {
@@ -165,14 +146,14 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   }
 
 
-  activateHoverOn(evt: any) {
-    this.hoverFilter = ['==', 'name', evt];
-    console.log(this.hoverFilter);
-  }
+  // activateHoverOn(evt: any) {
+  //   this.hoverFilter = ['==', 'name', evt];
+  //   console.log(this.hoverFilter);
+  // }
 
-  disableHover() {
-    this.hoverFilter = ['==', 'name', ''];
-  }
+  // disableHover() {
+  //   this.hoverFilter = ['==', 'name', ''];
+  // }
 
 
   format2Geojson(data: any):FeatureCollection{

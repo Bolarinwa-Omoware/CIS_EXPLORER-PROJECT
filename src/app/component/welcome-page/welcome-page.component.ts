@@ -27,6 +27,8 @@ export class WelcomePageComponent implements OnInit {
   ];
 
   mapDataSource = [];
+  featureLayers = [];
+  
 
 
   constructor(
@@ -41,31 +43,42 @@ export class WelcomePageComponent implements OnInit {
     this._pages.page.subscribe(res => this.page = res);
     this.role = this.authService.getUserRole();
 
-    this.mongoService.getGeoFeatureCollectionById('5b0c24ebceebb401c863715d').subscribe(res=>{
-      let source = {
-        type: 'geojson',
-        data: res
-      }
-      this.mapDataSource.push(source);
-      this.mongoService.addGeoFeature(this.mapDataSource);
-    });
-    this.mongoService.getGeoFeatureCollectionById('5b0c1caa8c117929b411783b').subscribe(res=>{
-      let source = {
-        type: 'geojson',
-        data: res
-      }
-      this.mapDataSource.push(source);
-      this.mongoService.addGeoFeature(this.mapDataSource);
+    this.mongoService.getGeofeatureIds().subscribe(res=>{
+
+      this.mongoService.addFeatureLayer(res);
+       res.forEach(element => {
+         console.log(element);
+         
+         this.mongoService.getGeoFeatureCollectionById(element[0]).subscribe(res=>{
+          let source = {
+            type: 'geojson',
+            data: res
+          }
+          this.mapDataSource.push(source);
+          this.mongoService.addGeoFeature(this.mapDataSource);
+        });
+         
+       });
     });
 
-    this.mongoService.getGeoFeatureCollectionById('5b0befa6d6d3ec218c1c15e7').subscribe(res=>{
-      let source = {
-        type: 'geojson',
-        data: res
-      }
-      this.mapDataSource.push(source);
-      this.mongoService.addGeoFeature(this.mapDataSource);
-    });
+
+    // this.mongoService.getGeoFeatureCollectionById('5b0c1caa8c117929b411783b').subscribe(res=>{
+    //   let source = {
+    //     type: 'geojson',
+    //     data: res
+    //   }
+    //   this.mapDataSource.push(source);
+    //   this.mongoService.addGeoFeature(this.mapDataSource);
+    // });
+
+    // this.mongoService.getGeoFeatureCollectionById('5b0befa6d6d3ec218c1c15e7').subscribe(res=>{
+    //   let source = {
+    //     type: 'geojson',
+    //     data: res
+    //   }
+    //   this.mapDataSource.push(source);
+    //   this.mongoService.addGeoFeature(this.mapDataSource);
+    // });
 
     this.mongoService.addGeoFeature(this.mapDataSource);
 

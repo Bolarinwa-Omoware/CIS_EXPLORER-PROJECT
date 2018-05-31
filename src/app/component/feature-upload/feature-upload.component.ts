@@ -81,7 +81,7 @@ export class FeatureUploadComponent implements OnInit {
     }
 
     this.formFields= {
-      name: this.layerName,
+      name: this.layerName.trim(),
       projection: this.projectionType,
       files: this.files
     }
@@ -95,7 +95,7 @@ export class FeatureUploadComponent implements OnInit {
     
 
     this.progress = this.uploadFeatureService.upload(
-      `${baseURL}mongodbServer?name=${this.formFields.name}
+      `${baseURL}mongodbServer?name=${this.formFields.name.trim()}
       &projection=${this.formFields.projection}`,this.formFields);
 
 
