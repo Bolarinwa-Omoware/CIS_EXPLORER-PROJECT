@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { DataFrameWork } from '../../shared/popupModel';
 
 @Component({
   selector: 'app-mapbox-popup',
@@ -9,22 +10,18 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 export class MapboxPopupComponent implements OnInit {
 
   displayedColumns = ['position', 'name', 'detail'];
-  @Input('SourceData') mapData;
-  dataSource = new MatTableDataSource<DataFrameWork>();
+   
+   @Input('SourceData') dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor() { }
 
   ngOnInit() {
-    this.dataSource.data = this.mapData
+    // this.dataSource.data = this.mapData
     this.dataSource.paginator = this.paginator;
   }
 
 }
 
-export interface DataFrameWork {
-  position: number;
-  name: string;
-  detail: string;
-}
+

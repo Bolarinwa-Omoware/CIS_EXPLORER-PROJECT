@@ -1,15 +1,19 @@
+
+
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet, MatDialog, MatTableDataSource } from '@angular/material';
 import { Map, Popup } from 'mapbox-gl';
 import { FeatureCollection, GeoJson } from '../../geoModels/geo-model';
 import { AuthService } from '../../services/auth.service';
 import { MapboxGlService } from '../../services/mapbox-gl.service';
 import { MongodbService } from '../../services/mongodb.service';
+import { DataFrameWork } from '../../shared/popupModel';
 import { FeatureLayersDialogComponent } from '../feature-layers-dialog/feature-layers-dialog.component';
 import { FeatureUploadComponent } from '../feature-upload/feature-upload.component';
 
 
-declare let $: any;
+
+//  let $: any;
 
 
 @Component({
@@ -26,6 +30,13 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
      // data
      mapDataSource = [];
      mapDataSourceLayer = [];
+    //  popupData:DataFrameWork[] = [{
+    //   position: 1,
+    //   name: "BLOCK_ID",
+    //   detail: "DATA MAPPING STRATEGY"
+    // }];
+
+    popupData = new MatTableDataSource<DataFrameWork>([{position: 1, name: "DETAIL 1", detail: "JUST A TEST HERE"}]);
      
 
     // Users role variable
@@ -42,18 +53,17 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   ngOnInit() {
 
     this.authService.userRole.subscribe(res => this.role = res);
+  }
+
+  ngAfterViewInit(): void {
+    // this.initializeMap(); 
+    // console.log(this.map);
     this.mongodbServer.featureLayer.subscribe((res)=>{
       console.log(res);
       
       this.mapDataSourceLayer = res;
     });
     this.mongodbServer.geoFeatureData.subscribe((res)=> this.mapDataSource = res);
-
-  }
-
-  ngAfterViewInit(): void {
-    // this.initializeMap(); 
-    // console.log(this.map);
   }
 
   onLoad(mapInstance: Map){
@@ -110,24 +120,27 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
       "filter": ["==", "_id", ""]
     });
 
-    this.activateHoverOn(mapInstance,layer+"fill",layer+"hover","_id");
-    this.disableHover(mapInstance,layer+"fill",layer+"hover","_id");
+    // this.activateSelect(mapInstance,"mousemove",layer,"_id");
+    // this.disableSelect(mapInstance,"mouseleave", layer,"_id");
+    this.popUp_OnMouseClick(mapInstance,{},layer,"_id");
+    this.changeMousePointer(mapInstance,layer);
+    this.removeMousePointer(mapInstance,layer);
   }
 
-  activateHoverOn(map:Map, moveOn:string, hoverOn:string, filterVal:string) {
+  activateSelect(map:Map, event:string, targetLayer:string, filterVal:string) {
     // When the user moves their mouse over the states-fill layer, we'll update the filter in
     // the state-fills-hover layer to only show the matching state, thus making a hover effect.
-    this.map.on("mousemove", moveOn, function(evt) {
+    this.map.on(event, targetLayer+"fill", function(evt) {
       
-      map.setFilter(hoverOn, ["==", filterVal, evt.features[0].properties[filterVal]]);
+      map.setFilter(targetLayer+"hover", ["==", filterVal, evt.features[0].properties[filterVal]]);
       
     });
   }
 
-  disableHover(map:Map, moveOn:string, hoverOn:string, filterVal:string) {
+  disableSelect(map:Map, event:string, targetLayer:string, filterVal:string) {
     // Reset the state-fills-hover layer's filter when the mouse leaves the layer.
-    this.map.on("mouseleave", moveOn, function() {
-      map.setFilter(hoverOn, ["==", filterVal, ""]);
+    this.map.on(event,targetLayer+"fill", function() {
+      map.setFilter(targetLayer+"hover", ["==", filterVal, ""]);
     });
   }
 
@@ -161,12 +174,43 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
     // When a click event occurs on a feature in the specified layer, open a popup at the
     // location of the feature, with description HTML from its non-spatial properties.
 
-    popUp_OnMouseClick(map:Map, targetLayer:string, properties:Object){
+    popUp_OnMouseClick(map:Map,properties:Object, targetLayer:string, filterVal:string){
       const popup = new Popup();
-      map.on('click', targetLayer, (e)=> {
+      // let popEle = $('#popupId');
+      // var div = window.document.createElement('div');
+      let des = ` <app-mapbox-popup></app-mapbox-popup>`;
+      // div.innerHTML = des;
+      map.on('click', targetLayer+"fill", (e)=> {
+        // console.log(turf.polygon([[[-81, 41], [-88, 36], [-84, 31], [-80, 33], [-77, 39], [-81, 41]]]));
+        // console.log(e);
+        // this.popupData.push({
+        //   position: 1,
+        //   name: "BLOCK_ID",
+        //   detail: e.features[0].properties["BLOCK_ID"]
+        // }) //e.features[0].properties
+        console.log(this.popupData);
+        
+        popup.setLngLat(e.lngLat).setHTML(des).addTo(map);
 
+        this.activateSelect(map,'click',targetLayer,filterVal);
+        this.disableSelect(map,"mouseleave", targetLayer, filterVal);
+      });
+      
+    }
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    changeMousePointer(map:Map, targetLayer:string){
+      map.on('mouseenter', targetLayer+"fill", function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    }
+
+    removeMousePointer(map:Map, targetLayer:string){
+      map.on('mouseleave', targetLayer+"fill", function () {
+        map.getCanvas().style.cursor = '';
       });
     }
+
 
 }
 
