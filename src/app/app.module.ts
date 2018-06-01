@@ -39,6 +39,7 @@ import { UploadService } from './services/upload.service';
 import { baseURL } from './shared/baseurl';
 import { RestangularConfigFactory } from './shared/restConfig';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { MapboxPopupComponent } from './sharedComponents/mapbox-popup/mapbox-popup.component';
 
 
 
@@ -58,7 +59,8 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
     UploadDialogComponent,
     BearingDistTableComponent,
     FeatureUploadComponent,
-    FeatureLayersDialogComponent
+    FeatureLayersDialogComponent,
+    MapboxPopupComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatBottomSheet, MatDialog } from '@angular/material';
-import { Map } from 'mapbox-gl';
+import { Map, Popup } from 'mapbox-gl';
 import { FeatureCollection, GeoJson } from '../../geoModels/geo-model';
 import { AuthService } from '../../services/auth.service';
 import { MapboxGlService } from '../../services/mapbox-gl.service';
@@ -146,16 +146,6 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   }
 
 
-  // activateHoverOn(evt: any) {
-  //   this.hoverFilter = ['==', 'name', evt];
-  //   console.log(this.hoverFilter);
-  // }
-
-  // disableHover() {
-  //   this.hoverFilter = ['==', 'name', ''];
-  // }
-
-
   format2Geojson(data: any):FeatureCollection{
     
     let features:Array<GeoJson> = [];
@@ -167,6 +157,16 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
 
     return new FeatureCollection(features);
   }
+
+    // When a click event occurs on a feature in the specified layer, open a popup at the
+    // location of the feature, with description HTML from its non-spatial properties.
+
+    popUp_OnMouseClick(map:Map, targetLayer:string, properties:Object){
+      const popup = new Popup();
+      map.on('click', targetLayer, (e)=> {
+
+      });
+    }
 
 }
 
