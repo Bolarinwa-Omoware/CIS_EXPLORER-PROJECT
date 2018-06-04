@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { RestangularModule } from 'ngx-restangular';
 import { ImageDataFile } from '.././app/component/appModel/imageDataFile';
 import { PdfReporter } from '.././app/component/appModel/pdfReporter';
@@ -38,7 +39,6 @@ import { TraverseService } from './services/traverse.service';
 import { UploadService } from './services/upload.service';
 import { baseURL } from './shared/baseurl';
 import { RestangularConfigFactory } from './shared/restConfig';
-import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { MapboxPopupComponent } from './sharedComponents/mapbox-popup/mapbox-popup.component';
 
 
@@ -143,7 +143,8 @@ import { MapboxPopupComponent } from './sharedComponents/mapbox-popup/mapbox-pop
     WelcomeDialogComponent,
     UploadDialogComponent,
     FeatureUploadComponent,
-    FeatureLayersDialogComponent
+    FeatureLayersDialogComponent,
+    MapboxPopupComponent
   ],
   bootstrap: [AppComponent]
 })

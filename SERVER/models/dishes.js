@@ -6,7 +6,6 @@ require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
 
-
 var commentSchema = new Schema({
     rating: {
         type: Number,

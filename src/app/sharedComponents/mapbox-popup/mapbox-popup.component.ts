@@ -11,14 +11,15 @@ export class MapboxPopupComponent implements OnInit {
 
   displayedColumns = ['position', 'name', 'detail'];
    
-   @Input('SourceData') dataSource;
+   @Input('SourceData') dataSource = new MatTableDataSource<DataFrameWork>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor() { }
 
   ngOnInit() {
-    // this.dataSource.data = this.mapData
+    // this.dataSource.data = this.mapData\\\
+    // this.dataSource.data =[{position: 1, name: "plot no", detail: 'PL222'}];
     this.dataSource.paginator = this.paginator;
   }
 

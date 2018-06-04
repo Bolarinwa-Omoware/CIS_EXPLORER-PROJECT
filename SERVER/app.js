@@ -46,12 +46,12 @@ const connect = mongoose.connect(url);
 //Get the default connection
 var db = mongoose.connection;
 
-ogr2ogr('./public/awoya.zip').exec(function(er, data) {
-    if (er) console.error(er);
-    data.name = 'map content'
-    console.log(JSON.stringify(data, null, ' '));
+// ogr2ogr('./public/awoya.zip').exec(function(er, data) {
+//     if (er) console.error(er);
+//     data.name = 'map content'
+//     console.log(JSON.stringify(data, null, ' '));
 
-});
+// });
 
 
 connect.then(() => {
