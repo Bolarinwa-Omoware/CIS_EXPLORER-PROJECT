@@ -897,7 +897,7 @@ openByBearingDistance(): void{
 
 // tslint:disable-next-line:one-line
 public openChartingResult(): void{
-
+  
   this.pdfReporter.createPdf(
       this.ref_number,
       this.titleHolder,

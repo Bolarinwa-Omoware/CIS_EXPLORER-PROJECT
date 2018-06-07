@@ -51,19 +51,19 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
   ) { }
 
   ngOnInit() {
-
     this.authService.userRole.subscribe(res => this.role = res);
+    this.mongodbServer.featureLayer.subscribe((res)=>{
+      this.mapDataSourceLayer = res;
+    });
+    this.mongodbServer.geoFeatureData.subscribe((res)=> {
+      this.mapDataSource = res
+      console.log(this.mapDataSource);
+      
+    });
   }
 
   ngAfterViewInit(): void {
-    // this.initializeMap(); 
-    // console.log(this.map);
-    this.mongodbServer.featureLayer.subscribe((res)=>{
-      console.log(res);
-      
-      this.mapDataSourceLayer = res;
-    });
-    this.mongodbServer.geoFeatureData.subscribe((res)=> this.mapDataSource = res);
+
   }
 
   onLoad(mapInstance: Map){
@@ -258,6 +258,8 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
       }
       
       index++;
+
+
     });
 
 

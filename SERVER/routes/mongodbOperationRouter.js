@@ -73,8 +73,6 @@ mongodbOperationRouter.route('/')
         res.end('DELETE OPERATION IS NOT SUPORTED ON THIS ROUTER OUTLET'); // Updating not allowed
     });
 
-
-
 mongodbOperationRouter.route('/:featureCollectionId')
     .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
     .get(cors.cors, (req, res, next) => {
@@ -110,6 +108,277 @@ mongodbOperationRouter.route('/:featureCollectionId')
                 .catch((err) => next(err));
         });
 
+mongodbOperationRouter.route('/:featureCollectionId/features')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
+        GeoFeatures.findById(req.params.featureCollectionId)
+            .then((geoFeatures) => {
+                if (geoFeatures != null) {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(geoFeatures.features);
+                } else {
+                    err = new Error('geofeatures ' + req.params.featureCollectionId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        GeoFeatures.findById(req.params.featureCollectionId)
+            .then((geoFeatures) => {
+                if (geoFeatures != null) {
+                    geoFeatures.features.push(req.body);
+                    geoFeatures.save()
+                        .then((geoFeature) => {
+                            res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.json(geoFeature);
+                            // geoFeatureses.findById(geoFeatures._id)
+                            //     .populate('features.author')
+                            //     .then((geoFeatures) => {
+                            //         res.statusCode = 200;
+                            //         res.setHeader('Content-Type', 'application/json');
+                            //         res.json(geoFeatures);
+                            //     })
+                        }, (err) => next(err));
+                } else {
+                    err = new Error('geofeatures ' + req.params.featureCollectionId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('PUT operation not supported on /GeoFeatures/' +
+            req.params.featureCollectionId + '/features');
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdminUser,
+        (req, res, next) => {
+            GeoFeatures.findById(req.params.featureCollectionId)
+                .then((geofeature) => {
+                    if (geofeature != null) {
+                        for (var i = (geofeature.features.length - 1); i >= 0; i--) {
+                            geofeature.features.id(geofeature.features[i]._id).remove();
+                        }
+                        geofeature.save()
+                            .then((result) => {
+                                res.statusCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.json(result);
+                            }, (err) => next(err));
+                    } else {
+                        err = new Error('GeoFeatures ' + req.params.featureCollectionId + ' not found');
+                        err.status = 404;
+                        return next(err);
+                    }
+                }, (err) => next(err))
+                .catch((err) => next(err));
+        });
+
+
+
+mongodbOperationRouter.route('/:featureCollectionId/features/:featureId')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
+        GeoFeatures.findById(req.params.featureCollectionId)
+            .then((geoFeatures) => {
+                if (geoFeatures != null && geoFeatures.features.id(req.params.featureId) != null) {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(geoFeatures.features.id(req.params.featureId));
+                } else if (geoFeatures == null) {
+                    err = new Error('GeoFeatures ' + req.params.featureCollectionId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                } else {
+                    err = new Error('Feature ' + req.params.featureId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('POST operation not supported on /features/' + req.params.featureCollectionId +
+            '/features/' + req.params.featureId);
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+
+        res.statusCode = 403;
+        res.end('PUT operation not supported for now on /features/' + req.params.featureCollectionId +
+            '/features/' + req.params.featureId);
+        // GeoFeatures.findById(req.params.featureCollectionId)
+        //     .then((geoFeatures) => {
+        //         if (geoFeatures != null && geoFeatures.features.id(req.params.featureId) != null) {
+        //             //console.log(geoFeatures.comment.id(req.params.featureId).author.equals(req.user._id));
+        //             // console.log(`req.user._id: ${req.user._id}`);
+        //             // console.log(geoFeatures.features.id(req.params.featureId).author);
+        //             if (geoFeatures.features.id(req.params.featureId).author.equals(req.user._id)) {
+        //                 if (req.body.rating) {
+        //                     geoFeatures.features.id(req.params.featureId).rating = req.body.rating;
+        //                 }
+        //                 if (req.body.comment) {
+        //                     geoFeatures.features.id(req.params.featureId).comment = req.body.comment;
+        //                 }
+        //                 geoFeatures.save()
+        //                     .then((geoFeatures) => {
+        //                         geoFeatureses.findById(geoFeatures._id)
+        //                             .populate('features.author')
+        //                             .then((geoFeatures) => {
+        //                                 res.statusCode = 200;
+        //                                 res.setHeader('Content-Type', 'application/json');
+        //                                 res.json(geoFeatures);
+        //                             })
+        //                     }, (err) => next(err));
+        //             } else {
+        //                 err = new Error('You are not authorized to update this comment!');
+        //                 err.status = 403;
+        //                 return next(err);
+        //             }
+        //         } else if (geoFeatures == null) {
+        //             err = new Error('geoFeatures ' + req.params.featureCollectionId + ' not found');
+        //             err.status = 404;
+        //             return next(err);
+        //         } else {
+        //             err = new Error('Comment ' + req.params.featureId + ' not found');
+        //             err.status = 404;
+        //             return next(err);
+        //         }
+        // }, (err) => next(err))
+        // .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+
+        res.statusCode = 403;
+        res.end('DELETE operation not supported for now on /features/' + req.params.featureCollectionId +
+            '/features/' + req.params.featureId);
+        // GeoFeatures.findById(req.params.featureCollectionId)
+        //     .then((geoFeatures) => {
+        //         if (geoFeatures != null && geoFeatures.features.id(req.params.featureId) != null) {
+        //             if (geoFeatures.features.id(req.params.featureId).author.equals(req.user._id)) {
+        //                 geoFeatures.features.id(req.params.featureId).remove();
+        //                 geoFeatures.save()
+        //                     .then((geoFeatures) => {
+        //                         geoFeatureses.findById(geoFeatures._id)
+        //                             .populate('features.author')
+        //                             .then((geoFeatures) => {
+        //                                 res.statusCode = 200;
+        //                                 res.setHeader('Content-Type', 'application/json');
+        //                                 res.json(geoFeatures);
+        //                             })
+        //                     }, (err) => next(err));
+        //             } else {
+        //                 err = new Error('You are not authorized to delete this comment!');
+        //                 err.status = 403;
+        //                 return next(err);
+        //             }
+        //         } else if (geoFeatures == null) {
+        //             err = new Error('geoFeatures ' + req.params.featureCollectionId + ' not found');
+        //             err.status = 404;
+        //             return next(err);
+        //         } else {
+        //             err = new Error('Comment ' + req.params.featureId + ' not found');
+        //             err.status = 404;
+        //             return next(err);
+        //         }
+        //     }, (err) => next(err))
+        //     .catch((err) => next(err));
+    });
+
+
+mongodbOperationRouter.route('/:featureCollectionId/features/:featureId/properties')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
+        GeoFeatures.findById(req.params.featureCollectionId)
+            .then((geofeatures) => {
+                if (geofeatures != null && geofeatures.features.id(req.params.featureId) != null) {
+
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(geofeatures.features.id(req.params.featureId).properties);
+                } else if (geofeatures == null) {
+                    err = new Error('Geofeatures ' + req.params.featureId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                } else {
+                    err = new Error('Features ' + req.params.featureId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('POST operation not supported on /dishes/' + req.params.featureCollectionId +
+            '/comments/' + req.params.featureId);
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('POST operation not supported on /dishes/' + req.params.featureCollectionId +
+            '/comments/' + req.params.featureId);
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('DELETE operation not supported on /dishes/' + req.params.featureCollectionId +
+            '/comments/' + req.params.featureId);
+    });
+
+
+mongodbOperationRouter.route('/:featureCollectionId/features/:featureId/geometry')
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .get(cors.cors, (req, res, next) => {
+        GeoFeatures.findById(req.params.featureCollectionId)
+            .then((geofeatures) => {
+                if (geofeatures != null && geofeatures.features.id(req.params.featureId) != null) {
+
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(geofeatures.features.id(req.params.featureId).geometry);
+                } else if (geofeatures == null) {
+                    err = new Error('Geofeatures ' + req.params.featureId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                } else {
+                    err = new Error('Features ' + req.params.featureId + ' not found');
+                    err.status = 404;
+                    return next(err);
+                }
+            }, (err) => next(err))
+            .catch((err) => next(err));
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('POST operation not supported on /dishes/' + req.params.featureCollectionId +
+            '/comments/' + req.params.featureId);
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('POST operation not supported on /dishes/' + req.params.featureCollectionId +
+            '/comments/' + req.params.featureId);
+    })
+    .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end('DELETE operation not supported on /dishes/' + req.params.featureCollectionId +
+            '/comments/' + req.params.featureId);
+    });
 
 /**
  * Function to upload a new feature into the database

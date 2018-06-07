@@ -1,9 +1,6 @@
-import { forEach } from '@angular/router/src/utils/collection';
-import { ProjectionModel} from './../appModel/projectionModel';
 import { ImageDataFile } from './imageDataFile';
 declare var jsPDF: any; // Important
 declare let $:any;
-import * as html2canvas from 'html2canvas';
 
 
 export class PdfReporter{
