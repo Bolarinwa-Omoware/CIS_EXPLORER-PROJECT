@@ -160,12 +160,6 @@ export class MapboxPageComponent implements OnInit, AfterViewInit { //, AfterVie
               <td> ${data["ANN_GRent"]}</td>
             </tr>
 
-            <tr>
-              <td> 8.</td>
-              <td> ANNUAL GROUND RENT </td>
-              <td> ${data["ANN_GRent"]}</td>
-            </tr>
-
             
             <tr>
               <td> 9.</td>
